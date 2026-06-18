@@ -102,8 +102,8 @@ const SearchFilter = {
 const AIClient = {
   _baseUrl: (() => {
     const saved = localStorage.getItem('ai_api_url');
-    // 이전에 저장된 주소가 11434 거나 예전 클라우드플레어 주소면 무시하고 새 주소 강제 적용
-    if (saved && saved.includes('11434')) {
+    // 예전 로컬 주소나 예전 터널 주소가 저장되어 있으면 모두 무시
+    if (saved && (saved.includes('11434') || saved.includes('trycloudflare.com'))) {
       localStorage.removeItem('ai_api_url');
     }
     const currentSaved = localStorage.getItem('ai_api_url');
