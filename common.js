@@ -100,7 +100,15 @@ const SearchFilter = {
 
 // --- AI API Client ---
 const AIClient = {
-  _baseUrl: localStorage.getItem('ai_api_url') || (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1' ? 'http://localhost:8000' : 'https://sewing-insulation-camping-appropriate.trycloudflare.com'),
+  _baseUrl: (() => {
+    const saved = localStorage.getItem('ai_api_url');
+    // 이전에 저장된 주소가 11434 거나 예전 클라우드플레어 주소면 무시하고 새 주소 강제 적용
+    if (saved && saved.includes('11434')) {
+      localStorage.removeItem('ai_api_url');
+    }
+    const currentSaved = localStorage.getItem('ai_api_url');
+    return currentSaved || (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1' ? 'http://localhost:8000' : 'https://concepts-degree-aquarium-success.trycloudflare.com');
+  })(),
   _model: localStorage.getItem('ai_model') || 'llama3.1:8b',
 
   getConfig() {
