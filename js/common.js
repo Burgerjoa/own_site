@@ -100,7 +100,15 @@ const SearchFilter = {
 
 // --- AI API Client ---
 const AIClient = {
-  _baseUrl: localStorage.getItem('ai_api_url') || 'http://localhost:11434',
+  _baseUrl: (() => {
+    const saved = localStorage.getItem('ai_api_url');
+    // 예전 로컬 주소나 예전 터널 주소가 저장되어 있으면 모두 무시
+    if (saved && (saved.includes('11434') || saved.includes('trycloudflare.com'))) {
+      localStorage.removeItem('ai_api_url');
+    }
+    const currentSaved = localStorage.getItem('ai_api_url');
+    return currentSaved || (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1' ? 'http://localhost:8000' : 'https://concepts-degree-aquarium-success.trycloudflare.com');
+  })(),
   _model: localStorage.getItem('ai_model') || 'llama3.1:8b',
 
   getConfig() {
@@ -119,7 +127,7 @@ const AIClient = {
 
   async checkStatus() {
     try {
-      const res = await fetch(`${this._baseUrl}/api/tags`, {
+      const res = await fetch(`${this._baseUrl}/health`, {
         signal: AbortSignal.timeout(3000)
       });
       return res.ok;
