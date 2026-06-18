@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html lang="ko" data-theme="light">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Base64 인코딩/디코딩 - 무료 변환기 | AI 도구 모음</title>
+  <meta name="description" content="텍스트를 Base64로 인코딩하거나 Base64를 텍스트로 디코딩하는 무료 온라인 도구입니다.">
+  <meta property="og:title" content="Base64 인코딩/디코딩 - 무료 변환기 | AI 도구 모음">
+  <meta property="og:description" content="텍스트를 Base64로 인코딩하거나 Base64를 텍스트로 디코딩하는 무료 온라인 도구입니다.">
+  <meta property="og:type" content="website">
+  <link rel="stylesheet" href="../css/style.css">
+  <style>
+    .tool-dual-pane {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: var(--space-lg);
+    }
+    @media (max-width: 768px) {
+      .tool-dual-pane {
+        grid-template-columns: 1fr;
+      }
+    }
+    .pane-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: var(--space-sm);
+    }
+    .pane-label {
+      font-size: 0.85rem;
+      font-weight: 600;
+      color: var(--text-secondary);
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+    .error-message {
+      margin-top: var(--space-sm);
+      padding: var(--space-sm) var(--space-md);
+      background: rgba(239, 68, 68, 0.1);
+      border: 1px solid rgba(239, 68, 68, 0.25);
+      border-radius: var(--radius-sm);
+      color: var(--accent-red);
+      font-size: 0.85rem;
+      display: none;
+    }
+    .error-message.show {
+      display: block;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Header -->
+  <header class="site-header">
+    <div class="container">
+      <div class="header-inner">
+        <a href="../index.html" class="site-logo">
+          <span class="logo-icon">⚡</span>
+          <span>AI 도구 모음</span>
+        </a>
+        <nav class="header-nav">
+          <a href="../index.html#text" class="nav-link"><span>📝</span> 텍스트</a>
+          <a href="../index.html#dev" class="nav-link"><span>💻</span> 개발</a>
+          <a href="../index.html#ai" class="nav-link"><span>🤖</span> AI</a>
+          <button class="theme-toggle" aria-label="테마 변경">☀️</button>
+        </nav>
+      </div>
+    </div>
+  </header>
+
+  <main class="container container--narrow">
+    <div class="tool-page">
+
+      <!-- Tool Header -->
+      <div class="tool-page-header">
+        <div class="breadcrumb">
+          <a href="../index.html">홈</a>
+          <span class="sep">›</span>
+          <span>Base64 변환기</span>
+        </div>
+        <h1 class="tool-page-title">🔄 Base64 변환기</h1>
+        <p class="tool-page-desc">텍스트를 Base64로 인코딩하거나, Base64 문자열을 텍스트로 디코딩합니다. 한글(UTF-8)을 완벽하게 지원합니다.</p>
+      </div>
+
+      <!-- Tool Body -->
+      <div class="tool-body">
+
+        <!-- Dual Pane -->
+        <div class="tool-dual-pane">
+          <!-- Input Pane -->
+          <div class="tool-section">
+            <div class="pane-header">
+              <span class="pane-label">입력</span>
+              <button class="btn btn-secondary" id="btnClearInput" style="padding: 4px 12px; font-size: 0.8rem;">지우기</button>
+            </div>
+            <textarea
+              id="inputText"
+              class="tool-textarea"
+              placeholder="텍스트 또는 Base64 문자열을 입력하세요..."
+              rows="10"
+              autofocus
+            ></textarea>
+          </div>
+
+          <!-- Output Pane -->
+          <div class="tool-section">
+            <div class="pane-header">
+              <span class="pane-label">결과</span>
+              <button class="btn btn-secondary" id="btnCopyResult" style="padding: 4px 12px; font-size: 0.8rem;">📋 복사</button>
+            </div>
+            <textarea
+              id="outputText"
+              class="tool-textarea"
+              placeholder="변환 결과가 여기에 표시됩니다..."
+              rows="10"
+              readonly
+            ></textarea>
+          </div>
+        </div>
+
+        <!-- Error Message -->
+        <div class="error-message" id="errorMsg"></div>
+
+        <!-- Action Buttons -->
+        <div class="btn-group" style="justify-content: center;">
+          <button class="btn btn-primary" id="btnEncode">🔒 인코딩 (텍스트 → Base64)</button>
+          <button class="btn btn-primary" id="btnDecode">🔓 디코딩 (Base64 → 텍스트)</button>
+          <button class="btn btn-secondary" id="btnSwap">🔃 입출력 교체</button>
+        </div>
+
+      </div>
+
+      <!-- SEO Article -->
+      <article class="tool-seo-article">
+        <h2>Base64 인코딩 및 디코딩 도구 소개</h2>
+        <p>Base64 변환기(Base64 Encoder / Decoder)는 사용자가 입력한 일반 텍스트 문자를 Base64 포맷으로 인코딩하거나, 반대로 Base64 형식으로 변환된 문자열을 사람이 읽고 이해할 수 있는 본래의 텍스트로 디코딩해 주는 강력하고 편리한 무료 온라인 개발자 도구입니다. 웹 개발, 이메일 전송 시스템, API 데이터 연동 등 다양한 IT 프로그래밍 환경에서 데이터 손실과 깨짐 현상 없이 문자와 바이너리 데이터를 안전하게 교환해야 할 때 전 세계적으로 널리 사용됩니다. 이 도구는 한글(UTF-8)과 같은 유니코드 기반의 다국어 문자를 완벽하게 지원하여 글자 깨짐 없는 정확한 변환 결과를 보장합니다.</p>
+
+        <h3>Base64란 무엇이며 왜 필요한가요?</h3>
+        <p>Base64는 컴퓨터 시스템이 데이터를 처리할 때 사용하는 8비트 이진 데이터(바이너리)를 텍스트 환경에서도 안전하게 취급하고 전송할 수 있도록, 64개의 출력 가능한 ASCII 문자(알파벳 대소문자 52개, 숫자 10개, '+', '/')로 변경해 주는 인코딩 알고리즘입니다. 주로 이기종 시스템 간 네트워크 통신 시 특수문자 제어 코드로 인해 발생할 수 있는 데이터 왜곡, 파손 및 파싱 오류를 미연에 방지하기 위한 핵심적인 목적으로 활용됩니다.</p>
+        
+        <h3>주요 활용 사례 및 서비스 장점</h3>
+        <ul>
+          <li><strong>데이터 전송의 안전성 확보:</strong> HTTP, SMTP(이메일), XML, JSON 등 텍스트 기반의 통신 프로토콜이나 데이터 포맷 내에서 이미지, 오디오, 파일 등의 바이너리 데이터를 포함하여 전송할 때 데이터가 손상되거나 변조되지 않도록 안전하게 보호합니다.</li>
+          <li><strong>프론트엔드 웹 개발 및 성능 최적화:</strong> HTML 문서나 CSS 파일 내부에 작은 사이즈의 아이콘이나 이미지를 Base64 문자열로 직접 삽입(Data URI scheme)하여 추가적인 서버 HTTP 요청 횟수를 줄여 웹페이지 로딩 속도를 최적화할 때 필수적으로 사용됩니다. 또한 Basic Authentication과 같은 웹 인증 헤더에서도 사용자 자격 증명(ID/Password)을 전달하기 위한 표준 포맷으로 쓰입니다.</li>
+          <li><strong>UTF-8 기반 다국어 완벽 지원:</strong> 영문뿐만 아니라 한글, 한자 등 다국어 처리 환경에서 빈번하게 발생하는 문자 인코딩 오류를 방지하기 위해, 입력된 텍스트 데이터를 UTF-8 바이트 배열로 우선 안전하게 변환한 후 Base64로 인코딩하여 완벽한 크로스 플랫폼 호환성을 제공합니다.</li>
+          <li><strong>클라이언트 사이드 실시간 처리:</strong> 이 도구의 모든 텍스트 인코딩 및 디코딩 변환 프로세스는 외부 서버로 텍스트를 전송하지 않고 전적으로 사용자의 웹 브라우저 내에서 자바스크립트를 통해 실시간으로 처리됩니다. 따라서 민감한 정보의 데이터 유출 걱정 없이 안전하고 쾌적하게 도구를 이용할 수 있습니다.</li>
+        </ul>
+      </article>
+
+      <!-- Ad Placeholder -->
+      <div class="ad-placeholder">광고 영역 (Google AdSense)</div>
+
+    </div>
+  </main>
+
+  <!-- Footer -->
+  <footer class="site-footer">
+    <div class="container">
+      <p>© 2025 AI 도구 모음. 무료 온라인 도구 서비스.</p>
+    </div>
+  </footer>
+
+  <script src="../js/common.js"></script>
+  <script>
+    (() => {
+      const inputText = document.getElementById('inputText');
+      const outputText = document.getElementById('outputText');
+      const btnEncode = document.getElementById('btnEncode');
+      const btnDecode = document.getElementById('btnDecode');
+      const btnSwap = document.getElementById('btnSwap');
+      const btnClearInput = document.getElementById('btnClearInput');
+      const btnCopyResult = document.getElementById('btnCopyResult');
+      const errorMsg = document.getElementById('errorMsg');
+
+      function showError(msg) {
+        errorMsg.textContent = msg;
+        errorMsg.classList.add('show');
+      }
+
+      function hideError() {
+        errorMsg.classList.remove('show');
+      }
+
+      // Encode: text → UTF-8 bytes → Base64
+      function utf8ToBase64(str) {
+        const encoder = new TextEncoder();
+        const bytes = encoder.encode(str);
+        let binary = '';
+        for (let i = 0; i < bytes.length; i++) {
+          binary += String.fromCharCode(bytes[i]);
+        }
+        return btoa(binary);
+      }
+
+      // Decode: Base64 → UTF-8 bytes → text
+      function base64ToUtf8(base64) {
+        const binary = atob(base64);
+        const bytes = new Uint8Array(binary.length);
+        for (let i = 0; i < binary.length; i++) {
+          bytes[i] = binary.charCodeAt(i);
+        }
+        const decoder = new TextDecoder();
+        return decoder.decode(bytes);
+      }
+
+      // Encode button
+      btnEncode.addEventListener('click', () => {
+        hideError();
+        const text = inputText.value;
+        if (!text) {
+          showError('인코딩할 텍스트를 입력해주세요.');
+          return;
+        }
+        try {
+          outputText.value = utf8ToBase64(text);
+          Toast.show('인코딩 완료 ✓');
+        } catch (e) {
+          showError('인코딩 중 오류가 발생했습니다: ' + e.message);
+        }
+      });
+
+      // Decode button
+      btnDecode.addEventListener('click', () => {
+        hideError();
+        const text = inputText.value.trim();
+        if (!text) {
+          showError('디코딩할 Base64 문자열을 입력해주세요.');
+          return;
+        }
+        try {
+          outputText.value = base64ToUtf8(text);
+          Toast.show('디코딩 완료 ✓');
+        } catch (e) {
+          showError('유효하지 않은 Base64 문자열입니다. 입력값을 확인해주세요.');
+        }
+      });
+
+      // Swap button
+      btnSwap.addEventListener('click', () => {
+        hideError();
+        const temp = inputText.value;
+        inputText.value = outputText.value;
+        outputText.value = temp;
+        Toast.show('입출력이 교체되었습니다');
+      });
+
+      // Clear button
+      btnClearInput.addEventListener('click', () => {
+        hideError();
+        inputText.value = '';
+        outputText.value = '';
+        inputText.focus();
+        Toast.show('입력이 지워졌습니다');
+      });
+
+      // Copy result button
+      btnCopyResult.addEventListener('click', () => {
+        const text = outputText.value;
+        if (!text) {
+          Toast.show('복사할 결과가 없습니다');
+          return;
+        }
+        copyToClipboard(text);
+      });
+    })();
+  </script>
+</body>
+</html>

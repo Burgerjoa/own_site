@@ -1,0 +1,563 @@
+<!DOCTYPE html>
+<html lang="ko" data-theme="light">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>색상 코드 변환기 - HEX RGB HSL 변환 | AI 도구 모음</title>
+  <meta name="description" content="HEX, RGB, HSL 색상 코드를 상호 변환합니다. 컬러 피커로 색상을 선택하세요.">
+  <meta property="og:title" content="색상 코드 변환기 - HEX RGB HSL 변환 | AI 도구 모음">
+  <meta property="og:description" content="HEX, RGB, HSL 색상 코드를 상호 변환합니다. 컬러 피커로 색상을 선택하세요.">
+  <meta property="og:type" content="website">
+  <link rel="stylesheet" href="../css/style.css">
+  <style>
+    .color-preview-wrapper {
+      display: flex;
+      gap: var(--space-md);
+      align-items: stretch;
+    }
+    .color-preview {
+      flex: 1;
+    }
+    .color-picker-wrapper {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: var(--space-sm);
+    }
+    .color-picker-wrapper label {
+      font-size: 0.75rem;
+      color: var(--text-muted);
+    }
+    input[type="color"] {
+      width: 56px;
+      height: 56px;
+      border: 2px solid var(--border-color);
+      border-radius: var(--radius-md);
+      background: none;
+      cursor: pointer;
+      padding: 2px;
+      transition: border-color var(--transition-fast);
+    }
+    input[type="color"]:hover {
+      border-color: var(--accent-purple);
+    }
+    .color-input-group {
+      display: flex;
+      flex-direction: column;
+      gap: var(--space-sm);
+    }
+    .color-input-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .color-input-header label {
+      font-size: 0.85rem;
+      font-weight: 600;
+      color: var(--text-secondary);
+    }
+    .color-input-row {
+      display: flex;
+      gap: var(--space-sm);
+      align-items: center;
+    }
+    .color-input-row .tool-input {
+      font-family: 'Inter', monospace;
+    }
+    .color-input-row .tool-input.hex-input {
+      flex: 1;
+    }
+    .color-input-row .tool-input.channel-input {
+      width: 72px;
+      text-align: center;
+    }
+    .channel-label {
+      font-size: 0.7rem;
+      color: var(--text-muted);
+      text-align: center;
+      min-width: 72px;
+    }
+    .channel-labels {
+      display: flex;
+      gap: var(--space-sm);
+      padding-left: 0;
+    }
+    .copy-field-btn {
+      flex-shrink: 0;
+      width: 32px;
+      height: 32px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: var(--bg-card-hover);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-sm);
+      color: var(--text-secondary);
+      cursor: pointer;
+      font-size: 0.8rem;
+      transition: all var(--transition-fast);
+    }
+    .copy-field-btn:hover {
+      color: var(--text-primary);
+      border-color: var(--accent-purple);
+    }
+    .saved-colors-grid {
+      display: flex;
+      flex-wrap: wrap;
+      gap: var(--space-sm);
+      min-height: 40px;
+    }
+    .saved-swatch {
+      width: 40px;
+      height: 40px;
+      border-radius: var(--radius-sm);
+      border: 2px solid var(--border-color);
+      cursor: pointer;
+      transition: all var(--transition-fast);
+      position: relative;
+    }
+    .saved-swatch:hover {
+      transform: scale(1.15);
+      border-color: var(--accent-purple);
+      box-shadow: var(--shadow-glow-purple);
+    }
+    .saved-swatch .remove-swatch {
+      position: absolute;
+      top: -6px;
+      right: -6px;
+      width: 16px;
+      height: 16px;
+      font-size: 0.55rem;
+      background: var(--accent-red);
+      color: #fff;
+      border: none;
+      border-radius: 50%;
+      cursor: pointer;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      line-height: 1;
+    }
+    .saved-swatch:hover .remove-swatch {
+      display: flex;
+    }
+    .empty-palette {
+      font-size: 0.8rem;
+      color: var(--text-muted);
+    }
+    .input-groups-container {
+      display: flex;
+      flex-direction: column;
+      gap: var(--space-lg);
+    }
+  </style>
+</head>
+<body>
+  <header class="site-header">
+    <div class="container">
+      <div class="header-inner">
+        <a href="../index.html" class="site-logo">
+          <span class="logo-icon">⚡</span>
+          AI 도구 모음
+        </a>
+        <nav class="header-nav">
+          <button class="theme-toggle" aria-label="테마 전환">☀️</button>
+        </nav>
+      </div>
+    </div>
+  </header>
+
+  <main class="container container--narrow">
+    <div class="tool-page">
+      <div class="tool-page-header">
+        <div class="breadcrumb">
+          <a href="../index.html">홈</a>
+          <span class="sep">›</span>
+          <span>색상 코드 변환기</span>
+        </div>
+        <h1 class="tool-page-title">🎨 색상 코드 변환기</h1>
+        <p class="tool-page-desc">HEX, RGB, HSL 색상 코드를 상호 변환합니다. 컬러 피커로 색상을 선택하거나 직접 값을 입력하세요.</p>
+      </div>
+
+      <div class="tool-body">
+        <!-- Color Preview + Picker -->
+        <div class="tool-section">
+          <div class="tool-section-title">색상 미리보기</div>
+          <div class="color-preview-wrapper">
+            <div class="color-preview" id="colorPreview" style="background:#FF5733;"></div>
+            <div class="color-picker-wrapper">
+              <input type="color" id="colorPicker" value="#FF5733" aria-label="색상 선택">
+              <label>색상 선택</label>
+            </div>
+          </div>
+        </div>
+
+        <!-- Input Groups -->
+        <div class="tool-section">
+          <div class="tool-section-title">색상 코드</div>
+          <div class="input-groups-container">
+            <!-- HEX -->
+            <div class="color-input-group">
+              <div class="color-input-header">
+                <label>HEX</label>
+              </div>
+              <div class="color-input-row">
+                <input type="text" class="tool-input hex-input" id="hexInput" value="#FF5733" maxlength="7" placeholder="#FF5733">
+                <button class="copy-field-btn" data-copy="hex" title="HEX 복사" aria-label="HEX 복사">📋</button>
+              </div>
+            </div>
+
+            <!-- RGB -->
+            <div class="color-input-group">
+              <div class="color-input-header">
+                <label>RGB</label>
+              </div>
+              <div class="color-input-row">
+                <input type="number" class="tool-input channel-input" id="rgbR" min="0" max="255" value="255" placeholder="R">
+                <input type="number" class="tool-input channel-input" id="rgbG" min="0" max="255" value="87" placeholder="G">
+                <input type="number" class="tool-input channel-input" id="rgbB" min="0" max="255" value="51" placeholder="B">
+                <button class="copy-field-btn" data-copy="rgb" title="RGB 복사" aria-label="RGB 복사">📋</button>
+              </div>
+              <div class="channel-labels">
+                <span class="channel-label">R</span>
+                <span class="channel-label">G</span>
+                <span class="channel-label">B</span>
+              </div>
+            </div>
+
+            <!-- HSL -->
+            <div class="color-input-group">
+              <div class="color-input-header">
+                <label>HSL</label>
+              </div>
+              <div class="color-input-row">
+                <input type="number" class="tool-input channel-input" id="hslH" min="0" max="360" value="11" placeholder="H">
+                <input type="number" class="tool-input channel-input" id="hslS" min="0" max="100" value="100" placeholder="S">
+                <input type="number" class="tool-input channel-input" id="hslL" min="0" max="100" value="60" placeholder="L">
+                <button class="copy-field-btn" data-copy="hsl" title="HSL 복사" aria-label="HSL 복사">📋</button>
+              </div>
+              <div class="channel-labels">
+                <span class="channel-label">H (°)</span>
+                <span class="channel-label">S (%)</span>
+                <span class="channel-label">L (%)</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Actions -->
+        <div class="btn-group">
+          <button class="btn btn-primary" id="saveColorBtn">💾 색상 저장</button>
+          <button class="btn btn-secondary" id="randomColorBtn">🎲 랜덤 색상</button>
+        </div>
+
+        <!-- Saved Colors -->
+        <div class="tool-section" id="savedSection">
+          <div class="tool-section-title">저장된 색상</div>
+          <div class="saved-colors-grid" id="savedGrid">
+            <span class="empty-palette" id="emptyMsg">저장된 색상이 없습니다.</span>
+          </div>
+        </div>
+      </div>
+
+      <article class="tool-seo-article">
+        <h2>무료 색상 코드 변환기 - HEX, RGB, HSL 완벽 변환</h2>
+        <p>현대 웹 디자인 및 개발에서 색상은 사용자 경험을 결정하는 가장 중요한 요소 중 하나입니다. <strong>색상 코드 변환기</strong>는 디자이너와 개발자가 다양한 플랫폼과 디자인 툴 간에 색상을 일관되게 유지하고 활용할 수 있도록 돕는 필수적이고 강력한 도구입니다. 이 페이지에서는 HEX, RGB, HSL 코드를 자유롭게 상호 변환하고, 시각적으로 미리 확인하며, 여러분만의 컬러 팔레트를 만들어 저장할 수 있습니다.</p>
+
+        <h3>주요 기능 및 장점</h3>
+        <ul>
+          <li><strong>실시간 상호 변환:</strong> HEX, RGB, HSL 중 하나의 값을 입력하면 나머지 색상 코드가 즉시 자동으로 계산되어 표시됩니다. 별도의 계산이나 클릭 없이 직관적인 변환이 가능합니다.</li>
+          <li><strong>내장 컬러 피커:</strong> 색상 코드를 직접 입력하지 않아도, 직관적인 컬러 피커 인터페이스를 통해 원하는 색상을 클릭 한 번으로 선택할 수 있습니다.</li>
+          <li><strong>손쉬운 복사 기능:</strong> 클립보드 복사 버튼을 통해 CSS나 디자인 도구(Figma, Photoshop 등)에 변환된 색상 코드를 바로 붙여넣기 할 수 있습니다. 이를 통해 작업 속도를 크게 향상시킵니다.</li>
+          <li><strong>색상 저장 및 팔레트 관리:</strong> 마음에 드는 색상을 브라우저에 저장하여 나만의 컬러 팔레트를 구성할 수 있습니다. 새로고침 후에도 유지되므로 작업의 연속성을 보장합니다.</li>
+          <li><strong>랜덤 색상 추천:</strong> 디자인 영감이 필요할 때 랜덤 색상 생성 기능을 사용하여 새로운 색상 아이디어를 얻어보세요.</li>
+        </ul>
+
+        <h3>HEX, RGB, HSL의 차이점과 활용</h3>
+        <p>각 색상 형식은 고유한 특징과 쓰임새를 가지고 있습니다. 프로젝트의 특성과 사용자의 선호도에 따라 적절한 형식을 선택하는 것이 중요합니다.</p>
+        <ul>
+          <li><strong>HEX (16진수 코드):</strong> 웹 개발에서 가장 널리 사용되는 형식입니다. <code>#FF5733</code>과 같이 표현되며 코드가 짧고 복사하기 쉬워 HTML과 CSS에서 널리 활용됩니다.</li>
+          <li><strong>RGB (Red, Green, Blue):</strong> 빛의 삼원색을 기반으로 합니다. 0에서 255 사이의 숫자로 각 색상의 강도를 조절합니다. 주로 디지털 디스플레이와 이미지 처리 프로그램에서 기본적으로 사용됩니다. 알파(Alpha) 채널을 추가해 투명도를 제어하는 RGBA 형태로도 자주 쓰입니다.</li>
+          <li><strong>HSL (Hue, Saturation, Lightness):</strong> 색상, 채도, 명도로 색상을 표현합니다. 사람이 색상을 인식하는 방식과 가장 유사하여 직관적입니다. 색상의 밝기나 톤을 조절할 때 매우 유용하며 최신 CSS 디자인에서 선호도가 높습니다.</li>
+        </ul>
+
+        <h3>언제 이 도구를 사용해야 할까요?</h3>
+        <p>웹사이트 퍼블리싱을 진행할 때, 포토샵이나 일러스트레이터의 색상 값을 CSS 코드로 옮길 때, 혹은 두 가지 이상의 디자인 툴에서 동일한 색상을 맞춰야 할 때 유용합니다. 특히 초보 웹 퍼블리셔나 프론트엔드 개발자라면, HSL과 RGB의 차이를 시각적으로 익히면서 색채 감각을 높이는 데에도 큰 도움이 됩니다. 별도의 소프트웨어 설치 없이 브라우저에서 바로 빠르고 정확하게 변환해 보세요!</p>
+      </article>
+
+      <div class="ad-placeholder">광고 영역 (Google AdSense)</div>
+    </div>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container">
+      <p>© 2026 AI 도구 모음. 모든 도구는 브라우저에서 실행됩니다.</p>
+    </div>
+  </footer>
+
+  <script src="../js/common.js"></script>
+  <script>
+    // --- Color Conversion Functions ---
+    function hex2rgb(hex) {
+      hex = hex.replace('#', '');
+      if (hex.length === 3) hex = hex.split('').map(c => c + c).join('');
+      const num = parseInt(hex, 16);
+      return {
+        r: (num >> 16) & 255,
+        g: (num >> 8) & 255,
+        b: num & 255
+      };
+    }
+
+    function rgb2hex(r, g, b) {
+      return '#' + [r, g, b].map(v => {
+        const h = Math.max(0, Math.min(255, Math.round(v))).toString(16);
+        return h.length === 1 ? '0' + h : h;
+      }).join('').toUpperCase();
+    }
+
+    function rgb2hsl(r, g, b) {
+      r /= 255; g /= 255; b /= 255;
+      const max = Math.max(r, g, b);
+      const min = Math.min(r, g, b);
+      let h, s, l = (max + min) / 2;
+
+      if (max === min) {
+        h = s = 0;
+      } else {
+        const d = max - min;
+        s = l > 0.5 ? d / (2 - max - min) : d / (max + min);
+        switch (max) {
+          case r: h = ((g - b) / d + (g < b ? 6 : 0)) / 6; break;
+          case g: h = ((b - r) / d + 2) / 6; break;
+          case b: h = ((r - g) / d + 4) / 6; break;
+        }
+      }
+
+      return {
+        h: Math.round(h * 360),
+        s: Math.round(s * 100),
+        l: Math.round(l * 100)
+      };
+    }
+
+    function hsl2rgb(h, s, l) {
+      h /= 360; s /= 100; l /= 100;
+      let r, g, b;
+
+      if (s === 0) {
+        r = g = b = l;
+      } else {
+        const hue2rgb = (p, q, t) => {
+          if (t < 0) t += 1;
+          if (t > 1) t -= 1;
+          if (t < 1/6) return p + (q - p) * 6 * t;
+          if (t < 1/2) return q;
+          if (t < 2/3) return p + (q - p) * (2/3 - t) * 6;
+          return p;
+        };
+        const q = l < 0.5 ? l * (1 + s) : l + s - l * s;
+        const p = 2 * l - q;
+        r = hue2rgb(p, q, h + 1/3);
+        g = hue2rgb(p, q, h);
+        b = hue2rgb(p, q, h - 1/3);
+      }
+
+      return {
+        r: Math.round(r * 255),
+        g: Math.round(g * 255),
+        b: Math.round(b * 255)
+      };
+    }
+
+    // --- DOM References ---
+    const els = {
+      preview: document.getElementById('colorPreview'),
+      picker: document.getElementById('colorPicker'),
+      hexInput: document.getElementById('hexInput'),
+      rgbR: document.getElementById('rgbR'),
+      rgbG: document.getElementById('rgbG'),
+      rgbB: document.getElementById('rgbB'),
+      hslH: document.getElementById('hslH'),
+      hslS: document.getElementById('hslS'),
+      hslL: document.getElementById('hslL'),
+      saveBtn: document.getElementById('saveColorBtn'),
+      randomBtn: document.getElementById('randomColorBtn'),
+      savedGrid: document.getElementById('savedGrid'),
+      emptyMsg: document.getElementById('emptyMsg')
+    };
+
+    let updating = false;
+
+    function updateFromRGB(r, g, b, source) {
+      if (updating) return;
+      updating = true;
+
+      r = clamp(r, 0, 255);
+      g = clamp(g, 0, 255);
+      b = clamp(b, 0, 255);
+
+      const hex = rgb2hex(r, g, b);
+      const hsl = rgb2hsl(r, g, b);
+
+      els.preview.style.background = hex;
+
+      if (source !== 'hex') els.hexInput.value = hex;
+      if (source !== 'picker') els.picker.value = hex;
+      if (source !== 'rgb') {
+        els.rgbR.value = r;
+        els.rgbG.value = g;
+        els.rgbB.value = b;
+      }
+      if (source !== 'hsl') {
+        els.hslH.value = hsl.h;
+        els.hslS.value = hsl.s;
+        els.hslL.value = hsl.l;
+      }
+
+      updating = false;
+    }
+
+    function clamp(v, min, max) {
+      return Math.max(min, Math.min(max, Math.round(v)));
+    }
+
+    // --- Event Listeners ---
+    // Color picker
+    els.picker.addEventListener('input', () => {
+      const rgb = hex2rgb(els.picker.value);
+      updateFromRGB(rgb.r, rgb.g, rgb.b, 'picker');
+    });
+
+    // HEX input
+    els.hexInput.addEventListener('input', () => {
+      let val = els.hexInput.value.trim();
+      if (!val.startsWith('#')) val = '#' + val;
+      const clean = val.replace('#', '');
+      if (clean.length === 3 || clean.length === 6) {
+        if (/^[0-9A-Fa-f]+$/.test(clean)) {
+          const rgb = hex2rgb(val);
+          updateFromRGB(rgb.r, rgb.g, rgb.b, 'hex');
+        }
+      }
+    });
+
+    // RGB inputs
+    [els.rgbR, els.rgbG, els.rgbB].forEach(input => {
+      input.addEventListener('input', () => {
+        const r = parseInt(els.rgbR.value) || 0;
+        const g = parseInt(els.rgbG.value) || 0;
+        const b = parseInt(els.rgbB.value) || 0;
+        updateFromRGB(r, g, b, 'rgb');
+      });
+    });
+
+    // HSL inputs
+    [els.hslH, els.hslS, els.hslL].forEach(input => {
+      input.addEventListener('input', () => {
+        const h = clamp(parseInt(els.hslH.value) || 0, 0, 360);
+        const s = clamp(parseInt(els.hslS.value) || 0, 0, 100);
+        const l = clamp(parseInt(els.hslL.value) || 0, 0, 100);
+        const rgb = hsl2rgb(h, s, l);
+        updateFromRGB(rgb.r, rgb.g, rgb.b, 'hsl');
+      });
+    });
+
+    // Copy buttons
+    document.querySelectorAll('.copy-field-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const type = btn.dataset.copy;
+        let text = '';
+        if (type === 'hex') text = els.hexInput.value;
+        else if (type === 'rgb') text = `rgb(${els.rgbR.value}, ${els.rgbG.value}, ${els.rgbB.value})`;
+        else if (type === 'hsl') text = `hsl(${els.hslH.value}, ${els.hslS.value}%, ${els.hslL.value}%)`;
+
+        copyToClipboard(text);
+        btn.textContent = '✓';
+        setTimeout(() => { btn.textContent = '📋'; }, 1500);
+      });
+    });
+
+    // Random color
+    els.randomBtn.addEventListener('click', () => {
+      const r = Math.floor(Math.random() * 256);
+      const g = Math.floor(Math.random() * 256);
+      const b = Math.floor(Math.random() * 256);
+      updateFromRGB(r, g, b, null);
+    });
+
+    // --- Saved Colors (localStorage) ---
+    const STORAGE_KEY = 'saved_colors';
+
+    function getSavedColors() {
+      try {
+        return JSON.parse(localStorage.getItem(STORAGE_KEY)) || [];
+      } catch {
+        return [];
+      }
+    }
+
+    function saveColors(colors) {
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(colors));
+    }
+
+    function renderSavedColors() {
+      const colors = getSavedColors();
+      els.savedGrid.innerHTML = '';
+
+      if (colors.length === 0) {
+        els.savedGrid.innerHTML = '<span class="empty-palette">저장된 색상이 없습니다.</span>';
+        return;
+      }
+
+      colors.forEach((hex, idx) => {
+        const swatch = document.createElement('div');
+        swatch.className = 'saved-swatch';
+        swatch.style.background = hex;
+        swatch.title = hex;
+        swatch.innerHTML = '<button class="remove-swatch" aria-label="삭제">✕</button>';
+
+        // Click swatch to load color
+        swatch.addEventListener('click', (e) => {
+          if (e.target.classList.contains('remove-swatch')) return;
+          const rgb = hex2rgb(hex);
+          updateFromRGB(rgb.r, rgb.g, rgb.b, null);
+        });
+
+        // Remove swatch
+        swatch.querySelector('.remove-swatch').addEventListener('click', (e) => {
+          e.stopPropagation();
+          const c = getSavedColors();
+          c.splice(idx, 1);
+          saveColors(c);
+          renderSavedColors();
+          Toast.show('색상이 삭제되었습니다.');
+        });
+
+        els.savedGrid.appendChild(swatch);
+      });
+    }
+
+    els.saveBtn.addEventListener('click', () => {
+      const hex = els.hexInput.value.toUpperCase();
+      const colors = getSavedColors();
+
+      if (colors.includes(hex)) {
+        Toast.show('이미 저장된 색상입니다.');
+        return;
+      }
+
+      colors.push(hex);
+      saveColors(colors);
+      renderSavedColors();
+      Toast.show('색상이 저장되었습니다 ✓');
+    });
+
+    // --- Initialize ---
+    renderSavedColors();
+    // Set initial color from default values
+    updateFromRGB(255, 87, 51, null);
+  </script>
+</body>
+</html>

@@ -1,0 +1,300 @@
+<!DOCTYPE html>
+<html lang="ko" data-theme="light">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>단위 변환기 - 평수, 길이, 무게, 넓이 변환 | 온라인 도구 모음</title>
+  <meta name="description" content="일상생활에서 자주 쓰이는 평방미터(평수), 길이, 무게, 넓이 단위들을 즉시 변환해 주는 무료 계산기입니다.">
+  <link rel="stylesheet" href="../css/style.css">
+  <style>
+    .converter-container {
+      display: flex;
+      flex-direction: column;
+      gap: 1.5rem;
+    }
+    .category-tabs {
+      display: flex;
+      gap: 0.5rem;
+      margin-bottom: 1rem;
+      border-bottom: 1px solid var(--border-color, #333);
+      padding-bottom: 0.5rem;
+      overflow-x: auto;
+    }
+    .category-tab {
+      padding: 0.5rem 1rem;
+      background: none;
+      border: none;
+      color: var(--text-muted, #888);
+      cursor: pointer;
+      font-weight: 600;
+      border-radius: var(--radius-sm, 4px);
+      transition: all 0.2s;
+      white-space: nowrap;
+    }
+    .category-tab:hover {
+      background: rgba(255, 255, 255, 0.05);
+      color: var(--text-color, #eee);
+    }
+    .category-tab.active {
+      background: var(--primary-color, #6a5acd);
+      color: white;
+    }
+    .converter-row {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+    }
+    .converter-box {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+    }
+    .converter-box select {
+      padding: 0.75rem;
+      background-color: var(--bg-surface, #1a1a24);
+      border: 1px solid var(--border-color, #333);
+      color: var(--text-color, #eee);
+      border-radius: var(--radius-sm, 4px);
+      outline: none;
+      font-family: inherit;
+      font-size: 1rem;
+    }
+    .converter-box select:focus {
+      border-color: var(--primary-color, #6a5acd);
+    }
+    .swap-btn {
+      margin-top: 1.5rem;
+      background: var(--bg-surface, #1a1a24);
+      border: 1px solid var(--border-color, #333);
+      color: var(--text-color, #eee);
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      transition: all 0.2s;
+      flex-shrink: 0;
+    }
+    .swap-btn:hover {
+      background: var(--primary-color, #6a5acd);
+      color: white;
+      border-color: var(--primary-color, #6a5acd);
+    }
+    @media (max-width: 600px) {
+      .converter-row {
+        flex-direction: column;
+      }
+      .swap-btn {
+        margin-top: 0;
+        transform: rotate(90deg);
+      }
+    }
+  </style>
+</head>
+<body>
+  <header class="site-header">
+    <div class="container">
+      <div class="header-inner">
+        <a href="../index.html" class="site-logo"><span class="logo-icon">🛠️</span><span>온라인 도구 모음</span></a>
+        <nav class="header-nav"><button class="theme-toggle" id="themeToggle" aria-label="테마 변경">🌙</button></nav>
+      </div>
+    </div>
+  </header>
+  
+  <main class="container container--narrow">
+    <div class="tool-page">
+      <div class="tool-page-header">
+        <div class="breadcrumb"><a href="../index.html">홈</a><span class="sep">›</span><span>단위 변환기</span></div>
+        <h1 class="tool-page-title">⚖️ 단위 변환기</h1>
+        <p class="tool-page-desc">일상생활에서 자주 쓰이는 평방미터(평수), 길이, 무게, 넓이 단위들을 즉시 변환해 주는 무료 계산기입니다.</p>
+      </div>
+      
+      <div class="tool-body tool-section">
+        <div class="converter-container">
+          <div class="category-tabs" id="categoryTabs">
+            <button class="category-tab active" data-category="area">면적 (Area)</button>
+            <button class="category-tab" data-category="length">길이 (Length)</button>
+            <button class="category-tab" data-category="weight">무게 (Weight)</button>
+          </div>
+          
+          <div class="converter-row">
+            <div class="converter-box">
+              <input type="number" id="inputFrom" class="tool-input" placeholder="변환할 값 입력" step="any">
+              <select id="unitFrom" aria-label="입력 단위 선택"></select>
+            </div>
+            
+            <button class="swap-btn" id="btnSwap" aria-label="단위 서로 바꾸기">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M8 4L4 8L8 12M4 8H20M16 20L20 16L16 12M20 16H4"/>
+              </svg>
+            </button>
+            
+            <div class="converter-box">
+              <input type="number" id="inputTo" class="tool-input" placeholder="결과" step="any">
+              <select id="unitTo" aria-label="결과 단위 선택"></select>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <article class="tool-seo-article">
+        <h2>단위 변환기란 무엇인가요?</h2>
+        <p>단위 변환기는 일상생활이나 업무 중에 자주 접하게 되는 다양한 측정 단위들을 다른 단위로 빠르고 정확하게 변환해 주는 무료 온라인 도구입니다. 복잡한 변환 공식을 외우거나 계산기를 두드릴 필요 없이, 직관적인 인터페이스를 통해 원하는 값을 즉시 확인할 수 있습니다.</p>
+
+        <h3>주요 지원 단위</h3>
+        <ul>
+          <li><strong>면적(평수) 변환:</strong> 아파트나 토지의 넓이를 가늠할 때 필수적인 '제곱미터(m²)'와 '평(py)' 사이의 변환을 지원합니다. 부동산 매물을 보거나 인테리어를 계획할 때 매우 유용합니다.</li>
+          <li><strong>길이 변환:</strong> 밀리미터(mm), 센티미터(cm), 미터(m), 킬로미터(km)와 같은 미터법 단위부터 인치(inch), 피트(foot), 야드(yard), 마일(mile) 등 야드파운드법 단위까지 상호 변환이 가능합니다. 해외 직구 사이즈를 확인하거나 도면을 읽을 때 활용해 보세요.</li>
+          <li><strong>무게 변환:</strong> 밀리그램(mg), 그램(g), 킬로그램(kg), 톤(t) 단위는 물론, 요리 레시피나 해외 배송 시 자주 쓰이는 온스(oz)와 파운드(lb) 변환 기능도 제공합니다.</li>
+        </ul>
+
+        <h3>단위 변환기 활용 팁</h3>
+        <p>현대 사회에서는 국가별로 사용하는 단위 체계가 다르기 때문에 단위 변환은 필수적인 과정이 되었습니다. 특히 스마트폰 하나로 해외 직구를 하고 다양한 정보를 얻는 요즘, 정확한 단위 계산은 실수를 줄여줍니다. 저희 도구는 양방향 변환을 지원하므로, 입력 칸 어느 쪽에 숫자를 넣어도 즉각적으로 결과값이 나타납니다. 또한 '단위 서로 바꾸기(스왑)' 버튼을 제공하여 더욱 빠른 계산을 돕습니다. 즐겨찾기에 추가해 두고 필요할 때마다 간편하게 꺼내 쓰세요!</p>
+
+        <h3>왜 이 도구를 사용해야 할까요?</h3>
+        <p>별도의 앱 설치나 회원 가입 없이 웹 브라우저에서 바로 사용할 수 있어 접근성이 뛰어납니다. PC는 물론 모바일 환경에서도 최적화되어 있어, 이동 중이거나 급하게 수치를 확인해야 하는 상황에서도 끊김 없이 부드럽게 작동합니다. 정확도 높은 변환 상수를 적용하여 오차 없는 결과를 제공합니다.</p>
+      </article>
+
+      <div class="ad-placeholder">광고 영역 (Google AdSense)</div>
+    </div>
+  </main>
+  
+  <footer class="site-footer">
+    <div class="container">
+      <p>© 2026 온라인 도구 모음</p>
+    </div>
+  </footer>
+  
+  <script src="../js/common.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      const unitData = {
+        area: {
+          defaultFrom: 'm2',
+          defaultTo: 'py',
+          units: {
+            'm2': { name: '제곱미터 (m²)', rate: 1 },
+            'py': { name: '평 (py)', rate: 3.305785 }
+          }
+        },
+        length: {
+          defaultFrom: 'cm',
+          defaultTo: 'in',
+          units: {
+            'mm': { name: '밀리미터 (mm)', rate: 0.001 },
+            'cm': { name: '센티미터 (cm)', rate: 0.01 },
+            'm': { name: '미터 (m)', rate: 1 },
+            'km': { name: '킬로미터 (km)', rate: 1000 },
+            'in': { name: '인치 (inch)', rate: 0.0254 },
+            'ft': { name: '피트 (foot)', rate: 0.3048 },
+            'yd': { name: '야드 (yard)', rate: 0.9144 },
+            'mi': { name: '마일 (mile)', rate: 1609.344 }
+          }
+        },
+        weight: {
+          defaultFrom: 'kg',
+          defaultTo: 'lb',
+          units: {
+            'mg': { name: '밀리그램 (mg)', rate: 0.000001 },
+            'g': { name: '그램 (g)', rate: 0.001 },
+            'kg': { name: '킬로그램 (kg)', rate: 1 },
+            't': { name: '톤 (t)', rate: 1000 },
+            'oz': { name: '온스 (oz)', rate: 0.0283495231 },
+            'lb': { name: '파운드 (lb)', rate: 0.45359237 }
+          }
+        }
+      };
+
+      const tabs = document.querySelectorAll('.category-tab');
+      const inputFrom = document.getElementById('inputFrom');
+      const inputTo = document.getElementById('inputTo');
+      const unitFrom = document.getElementById('unitFrom');
+      const unitTo = document.getElementById('unitTo');
+      const btnSwap = document.getElementById('btnSwap');
+
+      let currentCategory = 'area';
+
+      function formatNumber(num) {
+        if (num === 0) return "0";
+        return parseFloat(num.toPrecision(10)).toString();
+      }
+
+      function updateOptions() {
+        const data = unitData[currentCategory];
+        unitFrom.innerHTML = '';
+        unitTo.innerHTML = '';
+        
+        for (const [key, val] of Object.entries(data.units)) {
+          unitFrom.add(new Option(val.name, key));
+          unitTo.add(new Option(val.name, key));
+        }
+        
+        unitFrom.value = data.defaultFrom;
+        unitTo.value = data.defaultTo;
+      }
+
+      function calculateTo() {
+        if (inputFrom.value === '') {
+          inputTo.value = '';
+          return;
+        }
+        const val = parseFloat(inputFrom.value);
+        if (isNaN(val)) return;
+        
+        const fromRate = unitData[currentCategory].units[unitFrom.value].rate;
+        const toRate = unitData[currentCategory].units[unitTo.value].rate;
+        
+        const result = (val * fromRate) / toRate;
+        inputTo.value = formatNumber(result);
+      }
+
+      function calculateFrom() {
+        if (inputTo.value === '') {
+          inputFrom.value = '';
+          return;
+        }
+        const val = parseFloat(inputTo.value);
+        if (isNaN(val)) return;
+        
+        const fromRate = unitData[currentCategory].units[unitFrom.value].rate;
+        const toRate = unitData[currentCategory].units[unitTo.value].rate;
+        
+        const result = (val * toRate) / fromRate;
+        inputFrom.value = formatNumber(result);
+      }
+
+      tabs.forEach(tab => {
+        tab.addEventListener('click', () => {
+          tabs.forEach(t => t.classList.remove('active'));
+          tab.classList.add('active');
+          currentCategory = tab.dataset.category;
+          updateOptions();
+          inputFrom.value = '';
+          inputTo.value = '';
+        });
+      });
+
+      inputFrom.addEventListener('input', calculateTo);
+      inputTo.addEventListener('input', calculateFrom);
+      unitFrom.addEventListener('change', calculateTo);
+      unitTo.addEventListener('change', calculateTo);
+
+      btnSwap.addEventListener('click', () => {
+        const tempVal = inputFrom.value;
+        inputFrom.value = inputTo.value;
+        inputTo.value = tempVal;
+        
+        const tempUnit = unitFrom.value;
+        unitFrom.value = unitTo.value;
+        unitTo.value = tempUnit;
+      });
+
+      // Initialize
+      updateOptions();
+    });
+  </script>
+</body>
+</html>

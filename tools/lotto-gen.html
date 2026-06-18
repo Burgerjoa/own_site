@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="ko" data-theme="light">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>로또 번호 생성기 - 랜덤 번호 추첨기 | 온라인 도구 모음</title>
+  <meta name="description" content="1부터 45까지의 숫자 중 랜덤으로 행운의 로또 번호를 추첨해 줍니다. 재미로 보는 로또 번호.">
+  <meta property="og:title" content="로또 번호 생성기 - 랜덤 번호 추첨기 | 온라인 도구 모음">
+  <meta property="og:description" content="1부터 45까지의 숫자 중 랜덤으로 행운의 로또 번호를 추첨해 줍니다. 재미로 보는 로또 번호.">
+  <meta property="og:type" content="website">
+  <link rel="stylesheet" href="../css/style.css">
+  <style>
+    /* 로또 전용 스타일 */
+    .lotto-controls {
+      display: flex;
+      flex-direction: column;
+      gap: 15px;
+      margin-bottom: 30px;
+    }
+    .lotto-controls-inner {
+      display: flex;
+      gap: 10px;
+      justify-content: center;
+      align-items: stretch;
+    }
+    .game-count-select {
+      padding: 0 15px;
+      font-size: 1.1rem;
+      border-radius: var(--radius-md);
+      border: 1px solid var(--border-color);
+      background-color: var(--bg-input);
+      color: var(--text-primary);
+      outline: none;
+      font-family: inherit;
+      cursor: pointer;
+    }
+    .btn-lotto {
+      padding: 15px 30px;
+      font-size: 1.3rem;
+      font-weight: 700;
+      flex: 1;
+      max-width: 300px;
+    }
+    .lotto-result-area {
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-lg);
+      padding: 30px 20px;
+      min-height: 250px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+    }
+    .lotto-row {
+      display: flex;
+      gap: 12px;
+      margin-bottom: 16px;
+      padding: 12px 20px;
+      background: #f8f9fa;
+      border: 1px solid #dee2e6;
+      border-radius: 50px;
+      width: 100%;
+      max-width: 420px;
+      justify-content: center;
+      box-shadow: inset 0 2px 4px rgba(0,0,0,0.1);
+      animation: fadeIn 0.5s ease-out forwards;
+      opacity: 0;
+    }
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    .lotto-row:last-child {
+      margin-bottom: 0;
+    }
+    .lotto-ball {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 46px;
+      height: 46px;
+      border-radius: 50%;
+      color: #fff;
+      font-weight: 700;
+      font-size: 1.2rem;
+      box-shadow: inset -2px -2px 6px rgba(0,0,0,0.3), 2px 2px 6px rgba(0,0,0,0.2);
+      font-family: 'Inter', 'Pretendard', sans-serif;
+    }
+    .lotto-ball[data-color="yellow"] { background-color: #fbc400; color: #222; text-shadow: none; box-shadow: inset -2px -2px 6px rgba(0,0,0,0.15), 2px 2px 6px rgba(0,0,0,0.2); }
+    .lotto-ball[data-color="blue"] { background-color: #69c8f2; text-shadow: 1px 1px 2px rgba(0,0,0,0.2); }
+    .lotto-ball[data-color="red"] { background-color: #ff7272; text-shadow: 1px 1px 2px rgba(0,0,0,0.2); }
+    .lotto-ball[data-color="gray"] { background-color: #aaaaaa; text-shadow: 1px 1px 2px rgba(0,0,0,0.2); }
+    .lotto-ball[data-color="green"] { background-color: #b0d840; text-shadow: 1px 1px 2px rgba(0,0,0,0.2); }
+    
+    .empty-state {
+      color: var(--text-muted, #888);
+      text-align: center;
+      font-size: 1.1rem;
+    }
+    
+    @media (max-width: 480px) {
+      .lotto-ball {
+        width: 38px;
+        height: 38px;
+        font-size: 1.05rem;
+      }
+      .lotto-row {
+        gap: 8px;
+        padding: 10px 15px;
+      }
+      .btn-lotto {
+        font-size: 1.1rem;
+        padding: 12px 20px;
+      }
+      .game-count-select {
+        font-size: 1rem;
+        padding: 0 10px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header class="site-header">
+    <div class="container">
+      <div class="header-inner">
+        <a href="../index.html" class="site-logo"><span class="logo-icon">🛠️</span><span>온라인 도구 모음</span></a>
+        <nav class="header-nav"><button class="theme-toggle" aria-label="테마 변경">🌙</button></nav>
+      </div>
+    </div>
+  </header>
+  
+  <main class="container container--narrow">
+    <div class="tool-page">
+      <div class="tool-page-header">
+        <div class="breadcrumb"><a href="../index.html">홈</a><span class="sep">›</span><span>로또 번호 생성기</span></div>
+        <h1 class="tool-page-title">🎱 로또 번호 생성기</h1>
+        <p class="tool-page-desc">1부터 45까지의 숫자 중 랜덤으로 행운의 로또 번호를 추첨해 줍니다. 암호학적으로 안전한 난수를 사용하여 진정한 랜덤 번호를 제공합니다.</p>
+      </div>
+      
+      <div class="tool-body">
+        <div class="lotto-controls">
+          <div class="lotto-controls-inner">
+            <select id="gameCount" class="game-count-select" aria-label="게임 수 선택">
+              <option value="1">1게임</option>
+              <option value="2">2게임</option>
+              <option value="3">3게임</option>
+              <option value="4">4게임</option>
+              <option value="5" selected>5게임</option>
+            </select>
+            <button id="generateBtn" class="btn btn-primary btn-lotto">행운의 번호 뽑기</button>
+          </div>
+        </div>
+        
+        <div id="lottoResultArea" class="lotto-result-area">
+          <div class="empty-state">버튼을 눌러 행운의 번호를 추첨해보세요!</div>
+        </div>
+      </div>
+      
+      <article class="tool-seo-article">
+        <h2>로또 번호 생성기란?</h2>
+        <p>로또 번호 생성기는 1부터 45까지의 숫자 중에서 중복되지 않는 6개의 행운 번호를 완전 무작위로 추출해 주는 무료 온라인 도구입니다. 매주 로또를 구매할 때 어떤 번호를 고를지 고민되거나, 자동으로 번호를 발급받고 싶을 때 버튼 클릭 한 번으로 쉽고 재미있게 나만의 추천 번호를 조합할 수 있습니다.</p>
+
+        <h3>로또 번호 생성기의 특별한 점</h3>
+        <ul>
+          <li><strong>안전하고 공정한 난수 생성:</strong> 일반적인 단순 난수 발생기가 아닌, 브라우저에서 지원하는 암호학적으로 안전한 난수 생성(Cryptographically Secure Pseudo-Random Number Generator) 알고리즘을 사용합니다. 이로 인해 패턴이 없고 진정한 의미의 무작위 추첨이 보장됩니다.</li>
+          <li><strong>다중 게임 동시 생성:</strong> 1게임부터 최대 5게임까지 원하는 게임 수를 선택하여 한 번에 여러 개의 로또 번호 세트를 뽑을 수 있습니다. 여러 장을 구매하시는 분들에게 매우 편리합니다.</li>
+          <li><strong>직관적이고 화려한 UI:</strong> 실제 동행복권 로또 공의 색상(노란색, 파란색, 빨간색, 회색, 녹색)을 그대로 구현하여 시각적인 재미를 더했습니다. 번호가 생성될 때 부드럽게 나타나는 애니메이션 효과는 추첨의 설렘을 느끼게 해줍니다.</li>
+        </ul>
+
+        <h3>어떻게 활용하면 좋을까요?</h3>
+        <p>로또 용지에 직접 번호를 마킹할 때 수동과 자동 사이에서 갈등한다면, 이 도구로 번호를 뽑아 '반자동'의 느낌으로 활용해 보세요. 평소 좋아하는 숫자를 몇 개 고정해 두고, 나머지 번호를 이 생성기에서 나온 숫자로 채우는 것도 좋은 전략입니다. 또한, 직장 동료들이나 친구들과 함께 재미 삼아 이번 주 행운의 번호를 공유하며 소소한 즐거움을 나누는 용도로도 훌륭합니다.</p>
+
+        <h3>이용 안내 및 주의사항</h3>
+        <p>PC와 모바일 기기 모두에서 최적의 해상도로 작동하며, 별도의 앱 설치나 가입 없이 웹 접속만으로 무제한 이용이 가능합니다. 단, 본 도구에서 제공하는 번호는 철저한 난수 확률에 기반한 랜덤 번호이므로 당첨을 보장하지는 않습니다. 로또는 소액으로 건전하게 즐기시고, 이 생성기를 통해 일주일의 작은 희망과 재미를 느껴보시길 바랍니다. 당신의 행운을 기원합니다!</p>
+      </article>
+
+      <div class="ad-placeholder">광고 영역 (Google AdSense)</div>
+    </div>
+  </main>
+  
+  <footer class="site-footer">
+    <div class="container">
+      <p>© 2025 온라인 도구 모음</p>
+    </div>
+  </footer>
+  
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      const generateBtn = document.getElementById('generateBtn');
+      const gameCountSelect = document.getElementById('gameCount');
+      const resultArea = document.getElementById('lottoResultArea');
+      
+      // 암호학적으로 안전한 난수 생성 (min <= x <= max)
+      function getSecureRandomInt(min, max) {
+        const randomBuffer = new Uint32Array(1);
+        window.crypto.getRandomValues(randomBuffer);
+        const randomNumber = randomBuffer[0] / (0xffffffff + 1);
+        return Math.floor(randomNumber * (max - min + 1)) + min;
+      }
+      
+      // 1게임 번호 생성
+      function generateSingleGame() {
+        const numbers = new Set();
+        while (numbers.size < 6) {
+          numbers.add(getSecureRandomInt(1, 45));
+        }
+        return Array.from(numbers).sort((a, b) => a - b);
+      }
+      
+      // 번호에 따른 색상 결정 (동행복권 기준)
+      function getBallColor(num) {
+        if (num <= 10) return 'yellow';
+        if (num <= 20) return 'blue';
+        if (num <= 30) return 'red';
+        if (num <= 40) return 'gray';
+        return 'green';
+      }
+      
+      // 번호 추첨 및 화면 표시
+      function drawLotto() {
+        const gameCount = parseInt(gameCountSelect.value, 10);
+        resultArea.innerHTML = ''; // 초기화
+        
+        for (let i = 0; i < gameCount; i++) {
+          const numbers = generateSingleGame();
+          const rowEl = document.createElement('div');
+          rowEl.className = 'lotto-row';
+          rowEl.style.animationDelay = `${i * 0.1}s`; // 순차적 애니메이션
+          
+          numbers.forEach(num => {
+            const ball = document.createElement('div');
+            ball.className = 'lotto-ball';
+            ball.dataset.color = getBallColor(num);
+            ball.textContent = num;
+            rowEl.appendChild(ball);
+          });
+          
+          resultArea.appendChild(rowEl);
+        }
+      }
+      
+      generateBtn.addEventListener('click', drawLotto);
+    });
+  </script>
+  <script src="../js/common.js"></script>
+</body>
+</html>

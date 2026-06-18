@@ -1,0 +1,336 @@
+<!DOCTYPE html>
+<html lang="ko" data-theme="light">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>디데이 계산기 - 날짜 간격 계산, D-Day | 온라인 도구 모음</title>
+  <meta name="description" content="기념일, 디데이, 남은 날짜, 지난 날짜를 쉽고 빠르게 계산하는 무료 D-Day 계산기입니다.">
+  <meta property="og:title" content="디데이 계산기 - 날짜 간격 계산, D-Day | 온라인 도구 모음">
+  <meta property="og:description" content="기념일, 디데이, 남은 날짜, 지난 날짜를 쉽고 빠르게 계산하는 무료 D-Day 계산기입니다.">
+  <meta property="og:type" content="website">
+  <link rel="stylesheet" href="../css/style.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Pretendard:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    .tabs { margin-bottom: 20px; }
+    .tab-list { display: flex; gap: 10px; margin-bottom: 20px; border-bottom: 2px solid var(--border-color, #333); padding-bottom: 10px; }
+    .tab-btn { background: none; border: none; color: var(--text-muted, #888); font-size: 1.1rem; padding: 10px 20px; cursor: pointer; border-radius: 8px 8px 0 0; transition: all 0.2s; font-weight: 600; font-family: inherit; }
+    .tab-btn.active { color: var(--primary-color, #a855f7); background: var(--bg-hover, rgba(255,255,255,0.05)); }
+    .tab-btn:hover:not(.active) { color: var(--text-color, #fff); background: var(--bg-hover, rgba(255,255,255,0.02)); }
+    
+    .calc-card { background: var(--bg-card, #13131a); border-radius: 12px; border: 1px solid var(--border-color, #333); padding: 24px; margin-bottom: 20px; }
+    
+    .form-group { margin-bottom: 20px; }
+    .form-group label { display: block; margin-bottom: 8px; font-weight: 500; color: var(--text-color, #eee); }
+    .input-group { display: flex; align-items: center; gap: 10px; }
+    .input-group .tool-input { flex: 1; }
+    .input-suffix { font-weight: 500; color: var(--text-muted, #888); white-space: nowrap; }
+    
+    .quick-buttons { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 12px; }
+    .quick-buttons .btn-secondary { padding: 6px 12px; font-size: 0.9rem; border-radius: 6px; }
+    
+    .checkbox-label { margin-top: 15px; font-size: 0.95rem; color: var(--text-muted, #aaa); display: inline-flex; align-items: center; gap: 8px; cursor: pointer; user-select: none; }
+    .checkbox-label input[type="checkbox"] { width: 16px; height: 16px; cursor: pointer; accent-color: var(--primary-color, #a855f7); }
+    
+    .result-area { margin-top: 30px; padding: 30px 20px; background: rgba(168, 85, 247, 0.05); border-radius: 12px; border: 1px dashed var(--primary-color, #a855f7); text-align: center; }
+    .result-title { margin-bottom: 15px; font-size: 1.1rem; color: var(--text-muted, #888); font-weight: 500; }
+    .result-display { font-size: 2.5rem; font-weight: 700; color: var(--primary-color, #a855f7); word-break: keep-all; line-height: 1.3; }
+    .result-subtext { font-size: 1.1rem; color: var(--text-color, #eee); margin-top: 10px; font-weight: 500; }
+    
+    /* Responsive */
+    @media (max-width: 600px) {
+      .tab-btn { font-size: 1rem; padding: 8px 12px; flex: 1; text-align: center; }
+      .calc-card { padding: 16px; }
+      .result-display { font-size: 2rem; }
+    }
+  </style>
+</head>
+<body>
+  <header class="site-header">
+    <div class="container">
+      <div class="header-inner">
+        <a href="../index.html" class="site-logo">
+          <span class="logo-icon">🛠️</span>
+          <span>온라인 도구 모음</span>
+        </a>
+        <nav class="header-nav">
+          <button class="theme-toggle" id="theme-toggle" title="테마 변경">🌙</button>
+        </nav>
+      </div>
+    </div>
+  </header>
+
+  <main class="container container--narrow">
+    <div class="tool-page">
+      <div class="tool-page-header">
+        <div class="breadcrumb">
+          <a href="../index.html">홈</a>
+          <span class="sep">›</span>
+          <span>디데이 계산기</span>
+        </div>
+        <h1 class="tool-page-title">📅 D-Day 계산기</h1>
+        <p class="tool-page-desc">기념일, 디데이, 남은 날짜, 지난 날짜를 쉽고 빠르게 계산하세요.</p>
+      </div>
+
+      <div class="tool-body">
+        <div class="tabs">
+          <div class="tab-list">
+            <button class="tab-btn active" data-tab="mode1">날짜 찾기</button>
+            <button class="tab-btn" data-tab="mode2">D-Day 계산</button>
+          </div>
+          
+          <!-- Mode 1: 날짜 찾기 -->
+          <div class="tab-content calc-card" id="mode1">
+            <div class="form-group">
+              <label for="base-date">기준일</label>
+              <input type="date" id="base-date" class="tool-input">
+            </div>
+            
+            <div class="form-group">
+              <label for="add-days">기준일로부터</label>
+              <div class="input-group">
+                <input type="number" id="add-days" class="tool-input" placeholder="예: 100">
+                <span class="input-suffix">일 후/전</span>
+              </div>
+              <div class="quick-buttons">
+                <button class="btn-secondary quick-btn" data-days="100">+100일</button>
+                <button class="btn-secondary quick-btn" data-days="200">+200일</button>
+                <button class="btn-secondary quick-btn" data-days="365">+1년(365일)</button>
+                <button class="btn-secondary quick-btn" data-days="500">+500일</button>
+                <button class="btn-secondary quick-btn" data-days="1000">+1000일</button>
+              </div>
+            </div>
+            
+            <label class="checkbox-label">
+              <input type="checkbox" id="include-first-day">
+              기준일을 1일로 포함하여 계산 (연인 기념일, 아기 백일 등)
+            </label>
+            
+            <div class="result-area">
+              <h3 class="result-title">계산 결과</h3>
+              <div class="result-display" id="mode1-result">-</div>
+              <div class="result-subtext" id="mode1-subtext"></div>
+            </div>
+          </div>
+
+          <!-- Mode 2: D-Day 계산 -->
+          <div class="tab-content calc-card" id="mode2" style="display: none;">
+            <div class="form-group">
+              <label for="start-date">시작일 (오늘)</label>
+              <input type="date" id="start-date" class="tool-input">
+            </div>
+            
+            <div class="form-group">
+              <label for="end-date">종료일 (목표일)</label>
+              <input type="date" id="end-date" class="tool-input">
+            </div>
+            
+            <label class="checkbox-label">
+              <input type="checkbox" id="mode2-include-first-day">
+              기준일을 1일로 포함하여 계산 (만난지 OOO일 등)
+            </label>
+            
+            <div class="result-area">
+              <h3 class="result-title">계산 결과</h3>
+              <div class="result-display" id="mode2-result">-</div>
+              <div class="result-subtext" id="mode2-subtext"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <article class="tool-seo-article">
+        <h2>디데이 계산기란 무엇인가요?</h2>
+        <p>디데이 계산기는 연인과의 기념일, 수능, 시험, 결혼식, 출산일 등 중요한 날짜가 얼마나 남았는지, 혹은 기준일로부터 며칠이 지났는지 쉽고 정확하게 알려주는 무료 온라인 도구입니다. 복잡한 달력 계산 없이 날짜만 입력하면 자동으로 남은 일수와 지난 일수를 계산해 줍니다.</p>
+
+        <h3>디데이 계산기 주요 기능</h3>
+        <ul>
+          <li><strong>날짜 찾기:</strong> 기준일로부터 특정 일수(예: 100일, 500일, 1000일) 전이나 후의 날짜를 계산해 줍니다. 연인과의 100일 기념일이나 아기 백일을 계산할 때 유용합니다.</li>
+          <li><strong>D-Day 계산:</strong> 오늘이나 특정 시작일과 목표일을 설정하여 그 사이의 간격을 확인합니다. 수능, 자격증 시험, 여행 등 목표일까지 며칠이 남았는지(D-Day) 또는 며칠이 지났는지(D+Day) 직관적으로 보여줍니다.</li>
+          <li><strong>1일 포함 여부 설정:</strong> '기준일을 1일로 포함하여 계산' 옵션을 통해 '만난 지 100일'과 같은 한국식 기념일 계산에 최적화되어 있습니다.</li>
+        </ul>
+
+        <h3>어떤 상황에서 유용할까요?</h3>
+        <p>우리 일상에는 날짜 계산이 필요한 순간이 생각보다 많습니다. 커플들은 '우리 만난 지 며칠째?'를 확인하기 위해, 수험생이나 취업 준비생은 중요한 시험이나 면접까지 남은 시간을 계획하기 위해 이 도구를 사용합니다. 또한, 다이어트 시작일, 금연 일수 등 개인적인 목표를 달성해 나가는 과정에서도 D-Day나 D+Day를 확인하며 동기를 부여받을 수 있습니다. 복잡하게 달력을 보며 손가락으로 꼽을 필요 없이, 스마트하고 간편한 디데이 계산기로 시간을 체계적으로 관리해 보세요!</p>
+
+        <h3>사용 방법 안내</h3>
+        <p>이용 방법은 매우 직관적이고 간단합니다. 먼저 원하는 계산 모드를 탭에서 선택합니다. '날짜 찾기' 탭에서는 기준이 되는 날짜를 선택한 뒤 더하거나 뺄 일수를 입력하세요. 자주 쓰이는 100일, 1년 등의 버튼을 누르면 더욱 빠르게 계산할 수 있습니다. 'D-Day 계산' 탭에서는 시작일과 목표일만 달력에서 지정해주면 곧바로 화면 하단에 계산 결과가 나타납니다. 프로그램 설치나 회원가입 절차 없이 누구나 PC와 모바일에서 즉시 이용하실 수 있습니다.</p>
+      </article>
+
+      <div class="ad-placeholder">
+        광고 영역 (Google AdSense)
+      </div>
+    </div>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container">
+      <p>© 2025 온라인 도구 모음</p>
+    </div>
+  </footer>
+
+  <script src="../js/common.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      // 탭 전환 로직
+      const tabBtns = document.querySelectorAll('.tab-btn');
+      const tabContents = document.querySelectorAll('.tab-content');
+
+      tabBtns.forEach(btn => {
+        btn.addEventListener('click', () => {
+          tabBtns.forEach(b => b.classList.remove('active'));
+          tabContents.forEach(c => c.style.display = 'none');
+          
+          btn.classList.add('active');
+          const tabId = btn.getAttribute('data-tab');
+          document.getElementById(tabId).style.display = 'block';
+        });
+      });
+
+      // 날짜 유틸리티
+      const today = new Date();
+      const formatDate = (date) => {
+        return date.getFullYear() + '-' + 
+               String(date.getMonth() + 1).padStart(2, '0') + '-' + 
+               String(date.getDate()).padStart(2, '0');
+      };
+      
+      const formatResultDate = (date) => {
+        const year = date.getFullYear();
+        const month = date.getMonth() + 1;
+        const day = date.getDate();
+        const dayNames = ['일', '월', '화', '수', '목', '금', '토'];
+        const dayName = dayNames[date.getDay()];
+        return `${year}년 ${month}월 ${day}일 (${dayName})`;
+      };
+
+      const todayStr = formatDate(today);
+
+      // 모드 1 요소
+      const baseDateInput = document.getElementById('base-date');
+      const addDaysInput = document.getElementById('add-days');
+      const includeFirstDayCheckbox = document.getElementById('include-first-day');
+      const mode1Result = document.getElementById('mode1-result');
+      const mode1Subtext = document.getElementById('mode1-subtext');
+      const quickBtns = document.querySelectorAll('.quick-btn');
+
+      // 모드 2 요소
+      const startDateInput = document.getElementById('start-date');
+      const endDateInput = document.getElementById('end-date');
+      const mode2IncludeFirstDayCheckbox = document.getElementById('mode2-include-first-day');
+      const mode2Result = document.getElementById('mode2-result');
+      const mode2Subtext = document.getElementById('mode2-subtext');
+
+      // 초기값 설정
+      baseDateInput.value = todayStr;
+      startDateInput.value = todayStr;
+      
+      const tomorrow = new Date(today);
+      tomorrow.setDate(tomorrow.getDate() + 1);
+      endDateInput.value = formatDate(tomorrow);
+
+      // 모드 1 계산 (날짜 찾기)
+      function calculateMode1() {
+        mode1Subtext.textContent = '';
+        
+        if (!baseDateInput.value) {
+          mode1Result.textContent = '날짜를 선택하세요';
+          return;
+        }
+        
+        let daysToAdd = parseInt(addDaysInput.value, 10);
+        if (isNaN(daysToAdd)) {
+          mode1Result.textContent = formatResultDate(new Date(baseDateInput.value));
+          return;
+        }
+
+        const baseDate = new Date(baseDateInput.value);
+        baseDate.setHours(0,0,0,0);
+        
+        let actualDaysToAdd = daysToAdd;
+        
+        if (includeFirstDayCheckbox.checked) {
+          if (daysToAdd > 0) {
+            actualDaysToAdd -= 1; // 1일째 = +0일, 100일째 = +99일
+          } else if (daysToAdd < 0) {
+            actualDaysToAdd += 1;
+          }
+        }
+
+        const resultDate = new Date(baseDate);
+        resultDate.setDate(resultDate.getDate() + actualDaysToAdd);
+
+        mode1Result.textContent = formatResultDate(resultDate);
+        
+        const isPast = daysToAdd < 0;
+        const textSuffix = isPast ? '전' : '후';
+        mode1Subtext.textContent = `기준일로부터 ${Math.abs(daysToAdd)}일 ${textSuffix}의 날짜입니다.`;
+      }
+
+      // 모드 2 계산 (D-Day 계산)
+      function calculateMode2() {
+        mode2Subtext.textContent = '';
+        
+        if (!startDateInput.value || !endDateInput.value) {
+          mode2Result.textContent = '-';
+          return;
+        }
+
+        const startDate = new Date(startDateInput.value);
+        startDate.setHours(0,0,0,0);
+        const endDate = new Date(endDateInput.value);
+        endDate.setHours(0,0,0,0);
+
+        const diffTime = endDate.getTime() - startDate.getTime();
+        const diffDays = Math.round(diffTime / (1000 * 60 * 60 * 24));
+
+        if (mode2IncludeFirstDayCheckbox.checked) {
+          // 기념일 계산 (1일 포함)
+          const daysCount = diffDays >= 0 ? diffDays + 1 : diffDays - 1;
+          if (diffDays >= 0) {
+            mode2Result.textContent = `${daysCount}일째`;
+            mode2Subtext.textContent = `시작일을 1일로 포함한 기준입니다.`;
+          } else {
+            mode2Result.textContent = `${Math.abs(daysCount)}일 전`;
+            mode2Subtext.textContent = `시작일이 종료일보다 늦습니다.`;
+          }
+        } else {
+          // 일반 D-Day 계산
+          if (diffDays > 0) {
+            mode2Result.textContent = `D-${diffDays}`;
+            mode2Subtext.textContent = `${diffDays}일 남았습니다.`;
+          } else if (diffDays < 0) {
+            mode2Result.textContent = `D+${Math.abs(diffDays)}`;
+            mode2Subtext.textContent = `${Math.abs(diffDays)}일 지났습니다.`;
+          } else {
+            mode2Result.textContent = `D-Day`;
+            mode2Subtext.textContent = `바로 오늘입니다!`;
+          }
+        }
+      }
+
+      // 이벤트 리스너 등록 (모드 1)
+      baseDateInput.addEventListener('input', calculateMode1);
+      addDaysInput.addEventListener('input', calculateMode1);
+      includeFirstDayCheckbox.addEventListener('change', calculateMode1);
+
+      quickBtns.forEach(btn => {
+        btn.addEventListener('click', () => {
+          addDaysInput.value = btn.getAttribute('data-days');
+          calculateMode1();
+        });
+      });
+
+      // 이벤트 리스너 등록 (모드 2)
+      startDateInput.addEventListener('input', calculateMode2);
+      endDateInput.addEventListener('input', calculateMode2);
+      mode2IncludeFirstDayCheckbox.addEventListener('change', calculateMode2);
+
+      // 초기 계산 실행
+      calculateMode1();
+      calculateMode2();
+    });
+  </script>
+</body>
+</html>

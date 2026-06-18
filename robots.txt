@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://baekhadev.github.io/elegant-fermi/sitemap.xml

@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="ko" data-theme="light">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>온라인 도구 모음 - 무료 필수 웹 도구</title>
+  <meta name="description" content="글자수 세기, 디데이 계산기, 단위 변환 등 일상생활과 업무에 필요한 다양한 무료 도구를 제공합니다. 설치 없이 브라우저에서 바로 사용하세요.">
+  <meta property="og:title" content="온라인 도구 모음 - 무료 웹 도구">
+  <meta property="og:description" content="일상과 업무에 필요한 필수 웹 도구를 무료로 사용하세요.">
+  <meta property="og:type" content="website">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+  <!-- Header -->
+  <header class="site-header">
+    <div class="container">
+      <div class="header-inner">
+        <a href="index.html" class="site-logo">
+          <span class="logo-icon">🛠️</span>
+          <span>온라인 도구 모음</span>
+        </a>
+        <nav class="header-nav">
+          <a href="#life" class="nav-link active">생활/계산</a>
+          <a href="#text" class="nav-link">텍스트</a>
+          <a href="#dev" class="nav-link">개발/보안</a>
+          <button class="theme-toggle" aria-label="테마 변경">🌙</button>
+        </nav>
+      </div>
+    </div>
+  </header>
+
+  <main class="container">
+
+    <!-- Hero -->
+    <section class="hero">
+      <h1 class="hero-title">필요한 도구를 바로 사용하세요</h1>
+      <p class="hero-subtitle">설치 없이 브라우저에서 즉시 실행되는 빠르고 가벼운 무료 도구들입니다.</p>
+      <div class="search-bar">
+        <span class="search-icon">🔍</span>
+        <input type="text" id="searchInput" placeholder="어떤 도구를 찾으시나요?" autocomplete="off">
+      </div>
+    </section>
+
+    <!-- 툴 필터 탭 -->
+    <div class="category-filter" style="display: flex; gap: 0.5rem; margin-bottom: 2rem; justify-content: center; flex-wrap: wrap;">
+      <button class="filter-btn active" data-filter="all" style="padding: 0.5rem 1rem; border-radius: 20px; border: 1px solid var(--accent-primary); background: rgba(59, 130, 246, 0.1); color: var(--accent-primary); cursor: pointer; font-size: 0.9rem; transition: 0.2s;">🌟 전체 보기 (13)</button>
+      <button class="filter-btn" data-filter="life" style="padding: 0.5rem 1rem; border-radius: 20px; border: 1px solid var(--border-color); background: var(--bg-card); color: var(--text-secondary); cursor: pointer; font-size: 0.9rem; transition: 0.2s;">📅 생활/계산</button>
+      <button class="filter-btn" data-filter="text" style="padding: 0.5rem 1rem; border-radius: 20px; border: 1px solid var(--border-color); background: var(--bg-card); color: var(--text-secondary); cursor: pointer; font-size: 0.9rem; transition: 0.2s;">📝 텍스트</button>
+      <button class="filter-btn" data-filter="security" style="padding: 0.5rem 1rem; border-radius: 20px; border: 1px solid var(--border-color); background: var(--bg-card); color: var(--text-secondary); cursor: pointer; font-size: 0.9rem; transition: 0.2s;">🔐 보안·인코딩</button>
+      <button class="filter-btn" data-filter="design" style="padding: 0.5rem 1rem; border-radius: 20px; border: 1px solid var(--border-color); background: var(--bg-card); color: var(--text-secondary); cursor: pointer; font-size: 0.9rem; transition: 0.2s;">🎨 디자인</button>
+      <button class="filter-btn" data-filter="dev" style="padding: 0.5rem 1rem; border-radius: 20px; border: 1px solid var(--border-color); background: var(--bg-card); color: var(--text-secondary); cursor: pointer; font-size: 0.9rem; transition: 0.2s;">💻 개발</button>
+      <button class="filter-btn" data-filter="ai" style="padding: 0.5rem 1rem; border-radius: 20px; border: 1px solid var(--border-color); background: var(--bg-card); color: var(--text-secondary); cursor: pointer; font-size: 0.9rem; transition: 0.2s;">✍️ AI 보조</button>
+    </div>
+
+    <!-- 전체 도구 그리드 -->
+    <div class="tools-grid" id="mainToolsGrid">
+
+      <!-- 생활/계산 도구 (신규) -->
+      <a href="tools/dday-calc.html" class="tool-card" data-category="life" data-title="디데이 계산기 d-day 날짜" data-desc="디데이 계산기 날짜 계산 커플 수능">
+        <span class="tool-card-badge tool-card-badge--new">NEW</span>
+        <div class="tool-card-icon tool-card-icon--life">📅</div>
+        <div class="tool-card-content">
+          <h3 class="tool-card-title">D-Day 계산기</h3>
+          <p class="tool-card-desc">기념일, 디데이, 날짜 간격을 쉽게 계산합니다</p>
+        </div>
+      </a>
+
+      <a href="tools/unit-converter.html" class="tool-card" data-category="life" data-title="단위 변환기 평방미터 넓이 무게 길이" data-desc="평수 넓이 길이 무게 온도 단위 변환">
+        <span class="tool-card-badge tool-card-badge--new">NEW</span>
+        <div class="tool-card-icon tool-card-icon--life">⚖️</div>
+        <div class="tool-card-content">
+          <h3 class="tool-card-title">단위 변환기</h3>
+          <p class="tool-card-desc">평수, 길이, 무게 등 일상 단위들을 즉시 변환합니다</p>
+        </div>
+      </a>
+
+      <a href="tools/age-calc.html" class="tool-card" data-category="life" data-title="만 나이 계산기 연나이 띠" data-desc="만 나이 계산기 연나이 띠 계산">
+        <span class="tool-card-badge tool-card-badge--new">NEW</span>
+        <div class="tool-card-icon tool-card-icon--life">🎂</div>
+        <div class="tool-card-content">
+          <h3 class="tool-card-title">만 나이 계산기</h3>
+          <p class="tool-card-desc">현재 만 나이와 연 나이, 띠를 정확히 계산합니다</p>
+        </div>
+      </a>
+
+      <a href="tools/lotto-gen.html" class="tool-card" data-category="life" data-title="로또 번호 생성기 추첨기" data-desc="로또 번호 생성기 랜덤 추첨기 운세">
+        <span class="tool-card-badge tool-card-badge--new">NEW</span>
+        <div class="tool-card-icon tool-card-icon--life">🎱</div>
+        <div class="tool-card-content">
+          <h3 class="tool-card-title">로또 번호 생성기</h3>
+          <p class="tool-card-desc">랜덤으로 행운의 로또 번호를 추첨해 줍니다</p>
+        </div>
+      </a>
+
+      <!-- 텍스트 도구 -->
+      <a href="tools/char-counter.html" class="tool-card" data-category="text" data-title="글자수 세기" data-desc="글자수 단어수 바이트수 카운터">
+        <div class="tool-card-icon tool-card-icon--text">✏️</div>
+        <div class="tool-card-content">
+          <h3 class="tool-card-title">글자수 세기</h3>
+          <p class="tool-card-desc">글자수, 단어수, 바이트수를 실시간으로 세어줍니다</p>
+        </div>
+      </a>
+
+      <!-- 보안 · 인코딩 도구 -->
+      <a href="tools/password-gen.html" class="tool-card" data-category="security" data-title="비밀번호 생성기" data-desc="랜덤 비밀번호 안전한 패스워드">
+        <div class="tool-card-icon tool-card-icon--security">🔑</div>
+        <div class="tool-card-content">
+          <h3 class="tool-card-title">비밀번호 생성기</h3>
+          <p class="tool-card-desc">안전한 랜덤 비밀번호를 즉시 생성합니다</p>
+        </div>
+      </a>
+
+      <a href="tools/base64.html" class="tool-card" data-category="security" data-title="base64 인코딩 디코딩 변환" data-desc="base64 인코더 디코더 텍스트 변환">
+        <div class="tool-card-icon tool-card-icon--security">🔄</div>
+        <div class="tool-card-content">
+          <h3 class="tool-card-title">Base64 변환기</h3>
+          <p class="tool-card-desc">텍스트를 Base64로 인코딩/디코딩합니다</p>
+        </div>
+      </a>
+
+      <!-- 디자인 도구 -->
+      <a href="tools/color-converter.html" class="tool-card" data-category="design" data-title="색상 변환기 컬러 코드" data-desc="hex rgb hsl 색상 코드 변환 컬러 피커">
+        <div class="tool-card-icon tool-card-icon--design">🎨</div>
+        <div class="tool-card-content">
+          <h3 class="tool-card-title">색상 코드 변환기</h3>
+          <p class="tool-card-desc">HEX, RGB, HSL 색상 코드를 변환합니다</p>
+        </div>
+      </a>
+
+      <a href="tools/qr-generator.html" class="tool-card" data-category="design" data-title="qr코드 생성기 만들기" data-desc="qr코드 만들기 생성 다운로드">
+        <div class="tool-card-icon tool-card-icon--design">📱</div>
+        <div class="tool-card-content">
+          <h3 class="tool-card-title">QR코드 생성기</h3>
+          <p class="tool-card-desc">텍스트나 URL로 QR코드를 만듭니다</p>
+        </div>
+      </a>
+
+      <!-- 개발 도구 -->
+      <a href="tools/json-formatter.html" class="tool-card" data-category="dev" data-title="json 포맷터 정렬 뷰어" data-desc="json 정렬 포맷 변환 검증 뷰어">
+        <div class="tool-card-icon tool-card-icon--dev">{ }</div>
+        <div class="tool-card-content">
+          <h3 class="tool-card-title">JSON 포맷터</h3>
+          <p class="tool-card-desc">JSON을 보기 좋게 정렬하고 검증합니다</p>
+        </div>
+      </a>
+
+      <!-- AI 도구 -->
+      <a href="tools/ai-rewriter.html" class="tool-card tool-card--ai" data-category="ai" data-title="ai 문장 다듬기 바꿔쓰기 패러프레이징" data-desc="문장 바꿔쓰기 패러프레이징 다듬기 교정">
+        <span class="tool-card-badge">AI</span>
+        <div class="tool-card-icon tool-card-icon--ai">✍️</div>
+        <div class="tool-card-content">
+          <h3 class="tool-card-title">문장 다듬기</h3>
+          <p class="tool-card-desc">AI가 문장을 자연스럽게 다듬어 드립니다</p>
+        </div>
+      </a>
+
+      <a href="tools/ai-summarizer.html" class="tool-card tool-card--ai" data-category="ai" data-title="ai 글 요약 텍스트 요약" data-desc="글 요약 사이트 텍스트 요약기 논문 요약">
+        <span class="tool-card-badge">AI</span>
+        <div class="tool-card-icon tool-card-icon--ai">📋</div>
+        <div class="tool-card-content">
+          <h3 class="tool-card-title">글 요약기</h3>
+          <p class="tool-card-desc">긴 글을 핵심만 간결하게 요약합니다</p>
+        </div>
+      </a>
+
+      <a href="tools/ai-email.html" class="tool-card tool-card--ai" data-category="ai" data-title="ai 이메일 작성 비즈니스" data-desc="비즈니스 이메일 작성 자동 생성 템플릿">
+        <span class="tool-card-badge">AI</span>
+        <div class="tool-card-icon tool-card-icon--ai">📧</div>
+        <div class="tool-card-content">
+          <h3 class="tool-card-title">이메일 작성기</h3>
+          <p class="tool-card-desc">상황에 맞는 비즈니스 이메일을 생성합니다</p>
+        </div>
+      </a>
+
+    </div>
+
+    <!-- 스크립트로 탭 필터링 기능 추가 -->
+    <script>
+      document.addEventListener('DOMContentLoaded', () => {
+        const filterBtns = document.querySelectorAll('.filter-btn');
+        const cards = document.querySelectorAll('.tool-card');
+
+        filterBtns.forEach(btn => {
+          btn.addEventListener('click', () => {
+            // 버튼 스타일 리셋
+            filterBtns.forEach(b => {
+              b.classList.remove('active');
+              b.style.background = 'var(--bg-card)';
+              b.style.color = 'var(--text-secondary)';
+              b.style.borderColor = 'var(--border-color)';
+            });
+
+            // 현재 버튼 활성화
+            btn.classList.add('active');
+            btn.style.background = 'rgba(59, 130, 246, 0.1)';
+            btn.style.color = 'var(--accent-primary)';
+            btn.style.borderColor = 'var(--accent-primary)';
+
+            const filter = btn.dataset.filter;
+            
+            // 카드 필터링
+            cards.forEach(card => {
+              if (filter === 'all' || card.dataset.category === filter) {
+                card.style.display = 'block';
+              } else {
+                card.style.display = 'none';
+              }
+            });
+          });
+        });
+      });
+    </script>
+
+    <!-- Ad Placeholder -->
+    <div class="ad-placeholder">
+      광고 영역 (Google AdSense)
+    </div>
+
+  </main>
+
+  <!-- Footer -->
+  <footer class="site-footer">
+    <div class="container" style="text-align: center; border-top: 1px solid var(--border-color); padding-top: 2rem; margin-top: 2rem;">
+      <div style="margin-bottom: 1rem;">
+        <a href="terms.html" style="color: var(--text-secondary); margin: 0 10px; font-size: 0.9rem;">이용약관</a>
+        <span style="color: var(--border-color);">|</span>
+        <a href="privacy.html" style="color: var(--text-secondary); margin: 0 10px; font-size: 0.9rem;">개인정보처리방침</a>
+      </div>
+      <p style="color: var(--text-muted); font-size: 0.85rem;">© 2026 온라인 도구 모음. All rights reserved.</p>
+      <p style="color: var(--text-muted); font-size: 0.8rem; margin-top: 0.5rem;">contact@example.com</p>
+    </div>
+  </footer>
+
+  <script src="js/common.js"></script>
+</body>
+</html>
